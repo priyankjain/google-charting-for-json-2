@@ -1,0 +1,8 @@
+This is a single web page that will show a users data. The userid will be passed to this page as a querystring.
+
+The data will be from the following sources:
+http://p2pool.org:9332/web/graph_data/miner_hash_rates/last_day
+Another data point
+http://reassent.no-ip.biz:7777/web/graph_data/miner_hash_rates/last_day
+
+When you call the pages above, you can substitute [day] with hour, week, month, year. It dynamically provides the dataset with different interval points.
