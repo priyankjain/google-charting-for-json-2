@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript"> var id;</script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./js/justgage.1.0.1.min.js"></script>
+<script type="text/javascript" src="./js/raphael.2.1.0.min.js"></script>
+<script type="text/javascript" src="./js/custom.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">&nbsp;</div>
+		<div id="error"></div>
+		<div id="results-and-stats">
+			<div class="page-header">
+  				<h1><span id="user_id"></span> <small>Results and Stats</small></h1>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div id="gauge" style="width:400px; height:320px"></div>
+				</div>
+
+				<div class="col-md-4">
+					<table class="table">
+						<tr><th colspan="2"><h3>Statistics and Info</h3></th></tr>
+						<tr>
+							<td><h4>Total Profits</h4></td>
+							<td><h4><span class='label label-info' id="total_profits"></span></h4></td>
+						</tr>
+						<tr>
+							<td><h4>Last 24h profits</h4></td>
+							<td><h4><span class='label label-default' id="24hour_profit"></span></h4></td>
+						</tr>
+						<tr>
+							<td><h4>Last Payout</h4></td>
+							<td><h4><span id="last_payout"></span></h4></td>
+						</tr>
+						<tr>
+							<td><h4>Date Joined</h4></td>
+							<td><h4><span id="datecreated"></span></h4></td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="col-md-4">
+					<table class="table">
+						<tr><th colspan="2"><h3>Current Balances</h3></th></tr>
+						<tr>
+							<td><h4>Immature</h4></td>
+							<td><h4><span class='label label-info' id="immature_balance"></span></h4></td>
+						</tr>	
+						<tr>
+							<td><h4>Unexchanged</h4></td>
+							<td><h4><span class='label label-warning' id="unexchanged_balance"></span></h4></td>
+						</tr>
+						<tr>
+							<td><h4>Ready For Payout</h4></td>
+							<td><h4><span class='label label-success' id="readyforpayout_balance"></span></h4></td>
+						</tr>
+						<tr>
+							<td><h4>Total Expected</h4></td>
+							<td><h4><span class='label label-primary' id="expected_btc"></span></h4></td>
+						</tr>
+					</table>
+				</div>	
+			</div>
+
+			<div id="payout"></div>
+			<div id="hashrate"></div>
+
+			<div class="row" id="recent-payouts">
+			</div>
+		</div>
+	<div class="container">
+<script>
+	
+  var g = new JustGage({
+    id: "gauge", 
+    value: getLatestHashRate(id),
+    min: 0,
+    max: 0.1,
+    title: "Pool Hashrate"
+  }); 
+  setInterval(function(){g.refresh(getLatestHashRate(id))},2000);
+</script>
+</body>
+</html>
