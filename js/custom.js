@@ -2,7 +2,7 @@
 var m_names = new Array("January", "February", "March", 
 "April", "May", "June", "July", "August", "September", 
 "October", "November", "December");
-
+google.load("visualization", "1", {packages:["corechart"]});
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -81,7 +81,8 @@ function getRecentPayouts(id)
 			html+="<tr><td>Date</td><td>BTC</td><td>Transaction ID</td></tr>";
 			for(var i=0;i<data.length;i++)
 			{
-				var datetime=new Date(data[i]["datetime"]);
+				var datetime=new Date(data[i]["datetime"].replace(" ","T"));
+				console.log(datetime);
 				html+="<tr><td>";
 				html+=m_names[datetime.getMonth()]+" "+datetime.getDate()+", "+datetime.getFullYear()+" "+formatAMPM(datetime);
 				html+="</td><td>";
@@ -95,6 +96,8 @@ function getRecentPayouts(id)
 		}
 	});
 }
+
+
  function formatAMPM(date) {
   var hours = date.getHours();
   var ampm = hours >= 12 ? 'pm' : 'am';
@@ -126,11 +129,11 @@ function getCurrentBalances(id)
 						}
 						else if(keys[i].indexOf("_payout")!=-1)
 						{
-							values[i]=getFriendlyLastPayout(values[i]);
+							values[i]=getFriendlyLastPayout(values[i].replace(" ","T"));
 						}
 						else if(keys[i].indexOf("datecreated")!=-1)
 						{
-							values[i]=getFriendlyCreated(values[i]);
+							values[i]=getFriendlyCreated(values[i].replace(" ","T"));
 						}
 						document.getElementById(keys[i]).innerHTML=values[i];	
 					}
@@ -145,7 +148,6 @@ function getCurrentBalances(id)
 $(document).ready(
 	function()
 	{
-		// google.load("visualization", "1", {packages:["corechart"]});
 		var user_id=window.location.search.replace( "?", "" );
 		user_id=decodeURI(user_id);
 		var pattern=/^user_id=(.)+$/;
@@ -158,6 +160,5 @@ $(document).ready(
 		id=user_id[1];
 		getCurrentBalances(id);
 		getRecentPayouts(id);
-
-		//End of ajax
+		getHash(id,"day");
 	});//End of document.ready

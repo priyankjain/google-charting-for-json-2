@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+	header("Access-Control-Allow-Origin: *");
 require_once("config.php");
 $mysqli = new mysqli($config['host'],$config['user'],$config['pass'],$config['database']);
 if($mysqli->connect_errno > 0)
