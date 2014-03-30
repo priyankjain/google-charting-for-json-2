@@ -1,0 +1,9 @@
+Change config.php as per your database
+
+Change urls in line number 77 and 114 of custom.js to point to your location of payouts.php and user_details.php
+
+I know for a fact that the payout chart is remaining, would the payout table (user_transactions table) have so many entries so as to show graph for payouts of this hour/this day, etc?
+
+THe justgage component is made to auto refresh every 2 seconds, let me know if that is taking too much load, I would remove it.
+
+Request you to release half the payment if you'd be okay with the work.
