@@ -2,16 +2,21 @@
 <html>
 <head>
 <title></title>
-<script type="text/javascript"> var id;</script>
+<script type="text/javascript"> var id;
+var loading='<br/><center><div class="windows8"><div class="wBall" id="wBall_1"><div class="wInnerBall"></div></div><div class="wBall" id="wBall_2"><div class="wInnerBall"></div></div><div class="wBall" id="wBall_3"><div class="wInnerBall"></div></div><divclass="wBall" id="wBall_4"><div class="wInnerBall"></div></div><div class="wBall" id="wBall_5"><div class="wInnerBall"></div></div></div></center><br/>';
+</script>
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="./css/custom.css">
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./js/justgage.1.0.1.min.js"></script>
 <script type="text/javascript" src="./js/raphael.2.1.0.min.js"></script>
 <script type="text/javascript" src="./js/timevariant.js"></script>
 <script type="text/javascript" src="./js/custom.js"></script>
+<script type="text/css">
+</script>
 </head>
 <body>
 	<div class="container">
@@ -71,9 +76,20 @@
 				</div>	
 			</div>
 
+			<ul class="nav nav-pills" id="navbar">
+			  <li><a href="#navbar" onclick="changeTab('hour')">Hour</a></li>
+			  <li class="active"><a href="#navbar" onclick="changeTab('day')">Day</a></li>
+			  <li><a href="#navbar" onclick="changeTab('week')">Week</a></li>
+			  <li><a href="#navbar" onclick="changeTab('month')">Month</a></li>
+			  <li><a href="#navbar" onclick="changeTab('year')">Year</a></li>
+			</ul>
+
+			<div id="payout-loading"></div>
 			<div id="payout"></div>
+			<div id="hashrate-loading"></div>
 			<div id="hashrate"></div>
 
+			<div id="recent-payouts-loading"><center></center></div>
 			<div class="row" id="recent-payouts">
 			</div>
 		</div>

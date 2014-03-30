@@ -1,6 +1,22 @@
+var arr=new Array("hour","day","week","month","year");
+function changeTab(period)
+{
+	var current_period=$("#navbar > li.active > a")[0].innerHTML;
+	if(period==current_period.toLowerCase()) return;
+	else
+	{
+		$("#navbar > li.active").removeClass("active");
+		var index=arr.indexOf(period);
+		$("#navbar > li:eq("+index+")").addClass("active");
+		getHash(id,period);
+	}
+}
+
 function getHash(id,period)
 {
 	var url="http://reassent.no-ip.biz:7777/web/graph_data/miner_hash_rates/last_"+period;
+	document.getElementById("hashrate-loading").innerHTML=loading;
+	document.getElementById("hashrate").innerHTML="";
 	$.ajax({
 		dataType: "json",
 		url: url,
@@ -15,22 +31,21 @@ function getHash(id,period)
 				success:function(dead_data)
 				{
 					var hashrates=new Array();
-					for(var i=0,j=0;i<data.length;i+=12,j++)
+					for(var i=0,j=0;i<data.length;i+=6,j++)
 					{
 						var users=$.map(data[i][1],function(value,key){return key;});
 						var hashes=$.map(data[i][1],function(value,key){return value;});
 						var hashes_dead=new Array(users.length);
-						for(var k=0;k<hashes.length;k++) hashes_dead[k]=0;
 						hashes_dead=$.map(dead_data[i][1],function(value,key){return value;});
 						var x=users.indexOf(id);
 						data[i][0]=new Date(data[i][0]*1000);
 						if(x!=-1)
 						{
-							hashrates[j]=new Array(data[i][0],Math.round( hashes[x]/1000/1000 *100)/100,Math.round( hashes_dead[x]/1000/1000 *100)/100);
+							hashrates[j]=new Array(data[i][0],Math.round( hashes[x]/1000/1000 *100)/100,Math.round( (isNaN(hashes_dead[x])?0:hashes_dead[x])/1000/1000 *100)/100);
 						}
 						else hashrates[j]=new Array(data[i][0],0,0);
 					}
-					
+					document.getElementById("hashrate-loading").innerHTML="";
 					drawHashChart(hashrates,period);
 				}
 			});

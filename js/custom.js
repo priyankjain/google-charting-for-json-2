@@ -70,6 +70,7 @@ function getLatestHashRate(id)
 }
 function getRecentPayouts(id)
 {
+	document.getElementById("recent-payouts-loading").innerHTML=loading;
 	$.ajax({
 		type: "POST",
 		dataType: "json",
@@ -82,7 +83,6 @@ function getRecentPayouts(id)
 			for(var i=0;i<data.length;i++)
 			{
 				var datetime=new Date(data[i]["datetime"].replace(" ","T"));
-				console.log(datetime);
 				html+="<tr><td>";
 				html+=m_names[datetime.getMonth()]+" "+datetime.getDate()+", "+datetime.getFullYear()+" "+formatAMPM(datetime);
 				html+="</td><td>";
@@ -92,6 +92,7 @@ function getRecentPayouts(id)
 				html+="</td></tr>";
 			}
 			html+="</table></div></div>";
+			document.getElementById("recent-payouts-loading").innerHTML="";
 			document.getElementById("recent-payouts").innerHTML=html;
 		}
 	});
@@ -160,5 +161,6 @@ $(document).ready(
 		id=user_id[1];
 		getCurrentBalances(id);
 		getRecentPayouts(id);
+		// getPayout(id,"day");
 		getHash(id,"day");
 	});//End of document.ready
