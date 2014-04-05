@@ -50,23 +50,48 @@ function getLatestHashRate(id)
 		  url: "http://reassent.no-ip.biz:7777/web/graph_data/miner_hash_rates/last_hour",
 		  success: function(data)
 		  {
+		  	document.getElementById("gauge").innerHTML="";
+		  	var first=false;
+		  	var unit="khs";
+		  	var maxval=0;
 		  	for(var i=0;i<data.length;i++)
 		  	{
 		  		var users=$.map(data[i][1],function(value,key){return key;});
             	var hashes=$.map(data[i][1],function(value,key){return value;});
             	var x=users.indexOf(id);
-            	if(x!=-1)
+            	if(x!=-1 && !first)
+            	{	
+            		first=true;
+            		ret= Math.round( hashes[x]/1000 * 100) / 100;
+            		unit="khs";
+            		if(ret>1000)
+            		{
+            			ret=Math.round(hashes[x]/1000/1000 * 100)/100;
+            			unit="mhs";
+            		}
+            		maxval=hashes[x];
+            	}
+            	else if(x!=-1 && first)
             	{
-            		ret= Math.round( hashes[x]/data.length/1000/1000 * 100) / 100;
-            		break;
+            		if(hashes[x]>maxval) maxval=hashes[x];
             	}
 		  	}
+		  	if(unit=="khs") { maxval=Math.round( maxval/1000 * 100) / 100; unit="KH/s";}
+		  	else if(unit=="mhs") { maxval=Math.round( maxval/1000/1000 * 100) / 100; unit="MH/s";}
+		  	 g = new JustGage({
+			    id: "gauge", 
+			    value: ret,
+			    min: 0,
+			    max: maxval,
+			    title: "Pool Hashrate ("+unit+")"
+			  }); 
+		  	g.config.max=maxval;
+		  	g.refresh(ret);
 		  },
 		  error: function(data)
 		  {
 		  }
 	});
-	return ret;
 }
 function getRecentPayouts(id)
 {
@@ -94,6 +119,10 @@ function getRecentPayouts(id)
 			html+="</table></div></div>";
 			document.getElementById("recent-payouts-loading").innerHTML="";
 			document.getElementById("recent-payouts").innerHTML=html;
+		},
+		error: function(data)
+		{
+			document.getElementById("recent-payouts-loading").innerHTML="<div class='alert alert-warning alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>No recent payouts</div>";
 		}
 	});
 }
@@ -161,6 +190,6 @@ $(document).ready(
 		id=user_id[1];
 		getCurrentBalances(id);
 		getRecentPayouts(id);
-		// getPayout(id,"day");
+		getPayout(id,"day");
 		getHash(id,"day");
 	});//End of document.ready

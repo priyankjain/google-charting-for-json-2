@@ -1,3 +1,5 @@
+Import charts.sql into a database names "charts"
+
 Change config.php as per your database
 
 Change urls in line number 77 and 114 of custom.js to point to your location of payouts.php and user_details.php
