@@ -75,6 +75,7 @@ function getLatestHashRate(id)
             	{
             		if(hashes[x]>maxval) maxval=hashes[x];
             	}
+            	console.log(hashes[x]+" "+maxval);
 		  	}
 		  	if(unit=="khs") { maxval=Math.round( maxval/1000 * 100) / 100; unit="KH/s";}
 		  	else if(unit=="mhs") { maxval=Math.round( maxval/1000/1000 * 100) / 100; unit="MH/s";}
@@ -84,9 +85,7 @@ function getLatestHashRate(id)
 			    min: 0,
 			    max: maxval,
 			    title: "Pool Hashrate ("+unit+")"
-			  }); 
-		  	g.config.max=maxval;
-		  	g.refresh(ret);
+			  });
 		  },
 		  error: function(data)
 		  {
