@@ -6,3 +6,19 @@ Another data point
 http://reassent.no-ip.biz:7777/web/graph_data/miner_hash_rates/last_day
 
 When you call the pages above, you can substitute [day] with hour, week, month, year. It dynamically provides the dataset with different interval points.
+
+
+1) The justgauge should not refresh automatically and the value should be the last 1 hour average. The max value should be the 24 hour average.
+
+2) The hashrate graph the hour, day, week, and year are fine. However when a user chooses month, please show the x-axis as 4 Apr 5 Apr.. just like week. So that they are consistent.
+
+3) The Payout graph needs to have its own filter like hashrates but only week, month, and year. So the top graph has its' own selection of specified duration. and the payout graph will have its own specified duration of only week, month, and year.
+
+4) Recent payouts we need to have all recent payouts, but since it could be long, let's have pagination so that we only show 30 payments at a time and then they would have to page additional history.
+
+5) The transaction id should be a hyperlink to the the following URL https://blockchain.info/tx/ce0ecca65b2602810ad1ff7447a9a35a2afe602ca31694c6f8749f03e1200d791
+where the last characters after /tx/ is the transaction id.
+
+6) The justgauge value of when 1.46 or 855.89 should display the units with the value. You may have to make the font smaller so they appear as 1.46 MH/s or 855.89 KH/s. I am even fine not showing 2 decimals for KH/s if there is not enough space.
+
+7) The label Pool Hashrate should be changed to 24hr user hashrate

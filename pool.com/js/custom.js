@@ -41,6 +41,7 @@ function getFriendlyCreated(date)
 	else if(dif<86400*2) return "Yesterday";
 	else return m_names[datetime.getMonth()]+" "+datetime.getDate()+", "+datetime.getFullYear();
 }
+
 function getLatestHashRate(id)
 {
 	var ret=0;
@@ -108,13 +109,14 @@ function getLatestHashRate(id)
 		  }
 	});
 }
+
 function getRecentPayouts(id)
 {
 	document.getElementById("recent-payouts-loading").innerHTML=loading;
 	$.ajax({
 		type: "POST",
 		dataType: "json",
-		url: "http://localhost/google-charting-for-json-2/payouts.php",
+		url: "http://reassent.no-ip.biz:8088/pool.com/payouts.php",
 		data: "user_id="+id,
 		success: function(data)
 		{
@@ -152,9 +154,10 @@ function getRecentPayouts(id)
   var minutes=date.getMinutes();
   return hours+':'+minutes+" "+ampm;
 }
+
 function pagination(page)
 {
-	var perpage=3;
+	var perpage=30;
   $("#dataTable").show();
   $(".searchable tr").show();
   var total=$(".searchable tr.match").length;
@@ -183,11 +186,13 @@ function pagination(page)
       $("#showing").html("<span>Showing results "+(page*perpage+1)+"-"+((page!=number_of_pages-1)?((page+1)*perpage):(total))+" of "+total+"</span>");
 }
 
+
+
 function getCurrentBalances(id)
 {
 	$.ajax({
 			type: "POST",
-			url: "http://localhost/google-charting-for-json-2/user_details.php",
+			url: "http://reassent.no-ip.biz:8088/pool.com/user_details.php",
 			dataType: "json",
 			data: "user_id="+id,
 			success: function(data)
@@ -208,7 +213,7 @@ function getCurrentBalances(id)
 						{
 							values[i]=getFriendlyLastPayout(values[i].replace(" ","T"));
 						}
-						else if(keys[i].indexOf("datecreated")!=-1)
+						else if(keys[i].indexOf("DataCreated")!=-1)
 						{
 							values[i]=getFriendlyCreated(values[i].replace(" ","T"));
 						}

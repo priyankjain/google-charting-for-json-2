@@ -1,0 +1,28 @@
+sudo apt-get install php5-mysqlnd
+
+
+
+1. Here web -> index.html would be the one webpage of the main project
+
+2. Import the charts.sql into your database (Ignore this step if the user table is already there in database with tablename "users"
+and columns "user_id" and "24hour_profit")
+
+3. Change config.php as per your database configurations
+
+4. Place 24hprofits.php and config.php in your php web server and change line number 82 of index.html to your location of 24hprofits.php Also, config.php and 24hprofits.php should be in the same location
+
+5. Replace "userstats.html" on line 133 of index.html with the relative path to the userstats page.
+
+
+PAGE 2
+Import charts.sql into a database names "charts"
+
+Change config.php as per your database
+
+Change urls in line number 77 and 114 of custom.js to point to your location of payouts.php and user_details.php
+
+I know for a fact that the payout chart is remaining, would the payout table (user_transactions table) have so many entries so as to show graph for payouts of this hour/this day, etc?
+
+THe justgage component is made to auto refresh every 2 seconds, let me know if that is taking too much load, I would remove it.
+
+Request you to release half the payment if you'd be okay with the work.

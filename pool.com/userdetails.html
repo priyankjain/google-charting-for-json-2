@@ -19,12 +19,12 @@ var loading='<br/><center><div class="windows8"><div class="wBall" id="wBall_1">
 </script>
 </head>
 <body>
-	<div class="container">*
+	<div class="container">
 		<div class="row">&nbsp;</div>
 		<div id="error"></div>
 		<div id="results-and-stats">
 			<div class="page-header">
-  				<h1><span id="user_id"></span> <small>Results and Stats</small></h1>
+  				<h1><span id="userid"></span> <small>Results and Stats</small></h1>
 			</div>
 			<div class="row">
 				<div class="col-md-4">
@@ -48,7 +48,7 @@ var loading='<br/><center><div class="windows8"><div class="wBall" id="wBall_1">
 						</tr>
 						<tr>
 							<td><h4>Date Joined</h4></td>
-							<td><h4><span id="datecreated"></span></h4></td>
+							<td><h4><span id="DataCreated"></span></h4></td>
 						</tr>
 					</table>
 				</div>
@@ -83,7 +83,7 @@ var loading='<br/><center><div class="windows8"><div class="wBall" id="wBall_1">
 			  <li><a href="#navbar" onclick="changeTab('month')">Month</a></li>
 			  <li><a href="#navbar" onclick="changeTab('year')">Year</a></li>
 			</ul>
-
+			
 			<div class="row">&nbsp;</div>
 			<div id="hashrate-loading"></div>
 			<div id="hashrate"></div>
@@ -94,10 +94,10 @@ var loading='<br/><center><div class="windows8"><div class="wBall" id="wBall_1">
 			  <li><a href="#payout-navbar" onclick="changePayoutTab('year')">Year</a></li>
 			</ul>
 			<div class="row">&nbsp;</div>
-			<div id="payout-loading"></div>
-			<div id="payout"></div>
+                        <div id="payout-loading"></div>
+                        <div id="payout"></div>
 
-			<div id="recent-payouts-loading"></div>
+			<div id="recent-payouts-loading"><center></center></div>
 			<div class="row" id="recent-payouts">
 			</div>
 
@@ -113,6 +113,7 @@ var loading='<br/><center><div class="windows8"><div class="wBall" id="wBall_1">
 		        </ul>
 		      </div>
 		    </div>
+
 		</div>
 	</div>
 </body>

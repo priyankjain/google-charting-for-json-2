@@ -1,0 +1,235 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>User Stats</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+<link href="../web/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../web/js/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	 	<!---strat-slider---->
+	    <script type="text/javascript" src="../web/js/oneSimpleTablePaging-1.0.js"></script>
+	    <link rel="stylesheet" type="text/css" href="../web/css/slider.css" />
+	    <script type="text/javascript" src="../web/js/modernizr.custom.28468.js"></script>
+		<script type="text/javascript" src="../web/js/modernizr.custom.28468.js"></script>
+		<script type="text/javascript" src="../web/js/jquery.cslider.js"></script>
+			<script type="text/javascript">
+				$(function() {
+				
+					$('#da-slider').cslider({
+						autoplay	: true,
+						bgincrement	: 450
+					});
+				
+				});
+			</script>
+		<!---//strat-slider---->
+<!-- start top_js_button -->
+<script type="text/javascript" src="../web/js/move-top.js"></script>
+<script type="text/javascript" src="../web/js/easing.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+   <script type="text/javascript">
+     function formatAMPM(date) {
+  var hours = date.getHours();
+  var ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  return hours+' '+ ampm;
+}
+google.load("visualization", "1", {packages:["corechart"]});
+    function drawChart(inputData,divId) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('datetime','Time');
+		data.addColumn('number','Hash Rate');
+		data.addRows(inputData);
+		var options={'width':500,'height':150,legend: {position: 'none'},
+		 	"vAxis":{"title":"Hash Rate","minValue":0},
+    		"hAxis":{"title":"Last 24 hours",
+    		 format: 'h aa'
+    	}
+	};
+ 	var dateFormatter = new google.visualization.DateFormat({pattern: 'h aa'});
+ dateFormatter.format(data, 0);
+        var chart = new google.visualization.AreaChart(document.getElementById(divId));
+
+        chart.draw(data,options);
+      }
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+			});
+
+				$.ajax(
+				{
+  dataType: "json",
+  url: "http://reassent.no-ip.biz:7777/web/graph_data/miner_hash_rates/last_day",
+  success: function(data)
+  {
+              $.ajax(
+              {
+        dataType: "json",
+        url: "http://localhost/web/24hprofits.php",
+        success: function(data_profits)
+        {
+          var profits=data_profits;
+          data.sort(function(a,b){return parseFloat(a[0])-parseFloat(b[0]);});
+          var user_array=new Array();
+          for(var i=0;i<data.length;i++)
+          {
+            var users=$.map(data[i][1],function(value,key){return key;});
+            for(var j=0;j<users.length;j++)
+            {
+              if(user_array.indexOf(users[j])==-1)
+              {
+                user_array.push(users[j]);
+              }
+            }
+            data[i][0]=new Date(data[i][0]*1000);
+          }
+          user_array.sort();
+          
+          var hash_rates=new Array();;
+          var total=new Array();
+          var profit=new Array(user_array.length);
+          for(var i=0;i<user_array.length;i++) profit[i]=0;
+          for(var i=0;i<profits.length;i++)
+          {
+            var x=user_array.indexOf($.map(profits[i],function(value,key){return key;})[0]);
+            if(x!=-1)
+            {
+              profit[x]=new Number($.map(profits[i],function(value,key){return value;})).toFixed(8);
+            }
+          }
+          for(var i=0;i<data.length;i++)
+          {
+            var users=$.map(data[i][1],function(value,key){return key;});
+            var hashes=$.map(data[i][1],function(value,key){return value;});
+            for(var j=0;j<user_array.length;j++)
+            { 
+              if(i==0) {hash_rates[j]=new Array();total[j]=0;}
+              var x=users.indexOf(user_array[j]);
+              if(x!=-1)
+              {
+                if(i%12==0)hash_rates[j][i/12]=new Array(data[i][0],Math.round( hashes[x]/1000/1000 *100)/100);
+                total[j]+=hashes[x];
+              }
+              else if(i%12==0)hash_rates[j][i/12]=new Array(data[i][0],0);
+            }
+          }
+          var html="<div class='row' id='no-results'></div><table id='dataTable' class='table table-striped table-bordered'><thead><tr><th>Username</th><th>Hash Rate</th><th>Average</th><th>24 hour profits</th></tr></thead><tbody class='searchable'>";
+          for(var j=0;j<user_array.length;j++)
+          {
+            html+="<tr class='match'><td class='user'><a href='userstats.html?userid="+user_array[j]+"'>"+user_array[j]+"</a></td><td><div id='user"+j+"'></div></td><td>"+Math.round( total[j]/data.length/1000/1000 * 100) / 100+" MH/s</td><td>"+profit[j]+" BTC</td></tr>";
+          }
+          html+="</tbody></table>";
+          document.getElementById("json").innerHTML=html;
+          for(var j=0;j<user_array.length;j++)
+          {
+            drawChart(hash_rates[j],'user'+j);
+          }
+          pagination(0);
+        }
+        });
+  }
+});
+
+
+		});
+	
+	function search(){
+		var term=document.getElementById("searchTerm").value;
+    var rex = new RegExp(term, 'i');
+    $('.searchable tr.match').removeClass('match');
+        $('.searchable tr').filter(function() {
+          return rex.test(this.getElementsByClassName("user")[0].innerHTML);
+        }).addClass('match');
+    pagination(0);
+    }
+function pagination(page)
+{
+	var perpage=2;
+  $("#dataTable").show();
+  $(".searchable tr.match").show();
+  var total=$(".searchable tr.match").length;
+  if(total==0)
+  {
+    $("#dataTable").hide();
+    $("#no-results").html("<div class='alert alert-warning'><center>No results found!</center></div>");
+    $("#pagination").html("");
+    $("#showing").html("");
+  }
+  else 
+  {
+    $("#no-results").html("");
+    $(".searchable tr:not(.match)").hide();
+    var number_of_pages=Math.ceil(total/perpage);
+    $(".searchable tr.match:lt("+page*perpage+")").hide();
+    $(".searchable tr.match:gt("+((page+1)*perpage-1)+")").hide();
+    var html="";
+    if(page!=0)
+    {
+      html+='<li onclick="pagination('+(page-1)+')"><a href="#">&laquo;</a></li>';
+    }
+    for(var i=0;i<number_of_pages;i++)
+    {
+      if(i==page)
+      html+='<li class="active"><span>'+(i+1)+'</span></li>';
+      else 
+        html+='<li onclick="pagination('+(i)+')"><a href="#">'+(i+1)+'</a></li>';
+    }
+    if(page!=number_of_pages-1)
+    {
+      html+='<li onclick="pagination('+(page+1)+')"><a href="#">&raquo;</a></li>';
+    }
+      $("#pagination").html(html);
+      $("#showing").html("<span>Showing results "+(page*perpage+1)+"-"+((page!=number_of_pages-1)?((page+1)*perpage):(total))+" of "+total+"</span>");
+  }
+}
+
+	</script>
+</head>
+<body>
+<div class="container">
+  <div class="row">&nbsp;</div>
+  <div class="row">
+	  <div class="col-md-3">
+      <div class="input-group">
+        <input type="text" class="form-control" id="searchTerm" onkeyup="search()"  placeholder="Search Username"/>
+        <span class="input-group-btn">
+            <button class="btn btn-default btn-disabled" type="button" disabled><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+      </div>  
+    </div>
+  </div>
+
+
+  <div class="row">&nbsp;</div>
+
+  <div id="json"></div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <ul class="pagination" id="pagination">
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <ul class="pagination pull-right">
+          <li id="showing" class="active">
+          </li>
+        </ul>
+      </div>
+    </div>
+</div>
+</body>
+</html>
